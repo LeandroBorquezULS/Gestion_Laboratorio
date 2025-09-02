@@ -47,3 +47,49 @@ if __name__ == "__main__":
     crear_bd()
     agregar_laboratorio("Laboratorio de Computación", 30)
     agregar_laboratorio("Laboratorio de Física", 25)
+    
+####################################################################
+
+def reset_bd():
+    conn = sqlite3.connect("laboratorio.db")
+    cursor = conn.cursor()
+    cursor.execute("DROP TABLE IF EXISTS Reservas")
+    cursor.execute("DROP TABLE IF EXISTS Laboratorios")
+    cursor.execute("DROP TABLE IF EXISTS encargados")
+    conn.commit()
+
+def agregar_reserva(curso, fecha_reserva, hora_inicio, hora_fin, id_lab, estado):
+    conn = sqlite3.connect("laboratorio.db")
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA foreign_keys = ON;")
+    cursor.execute("INSERT INTO Reservas (curso, fecha_reserva, hora_inicio, hora_fin, id_lab, estado) VALUES (?, ?, ?, ?, ?, ?)",
+                   (curso, fecha_reserva, hora_inicio, hora_fin, id_lab, estado))
+    conn.commit()
+    conn.close()
+
+def mostrar_reservas():
+    conn = sqlite3.connect("laboratorio.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Reservas")
+    return cursor.fetchall()
+
+def agregar_encargados(id_encargado, nombre, usuario, contrasena):
+    conn = sqlite3.connect("laboratorio.db")
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Encargados (id_encargado, nombre, usuario, contrasena) VALUES (?, ?, ?, ?)", 
+                   (id_encargado, nombre, usuario, contrasena))
+    conn.commit()
+    conn.close()
+
+def mostrar_encargados():
+    conn = sqlite3.connect("laboratorio.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM encargados")
+    return cursor.fetchall()
+
+if __name__ == '__main__':
+    reset_bd()
+    crear_bd()
+    agregar_reserva("clase de computacion", "31-08-2025", "09:00", "11:00", 1, "pendiente")
+    print("Reservas:\n", mostrar_reservas())
+    print("encargados \n", mostrar_encargados())
