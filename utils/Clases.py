@@ -29,6 +29,6 @@ class Reporte:
     def __init__(self, id_reporte, reservas_canceladas, fecha, cantidad_reservas, lab_mas_usados):
         self.id_reporte = id_reporte
         self.reservas_canceladas = reservas_canceladas
-        self.fecha_reporte = fecha
+        self.fecha_reporte = fecha_reporte
         self.cantidad_reservas = cantidad_reservas
         self.lab_mas_usados = lab_mas_usados 
