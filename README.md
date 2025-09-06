@@ -1,2 +1,4 @@
 # Gestion_Laboratorio
-Proyecto Sistema de Gstion de Laboratorio
+Proyecto Sistema de Gestion de Laboratorio
+
+pip install tkcalendar
