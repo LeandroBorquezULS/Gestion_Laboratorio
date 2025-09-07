@@ -11,6 +11,17 @@ def inicializar_bd():
     with get_connection() as conn:
         cursor = conn.cursor()
 
+        # crear tabla de usuarios
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            usuario TEXT NOT NULL UNIQUE,
+            contrasena TEXT NOT NULL,
+            rol TEXT NOT NULL CHECK(rol IN ('admin', 'docente'))
+        )
+        """)
+
         # Crear tabla de bloques
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS bloques (
@@ -46,5 +57,4 @@ def inicializar_bd():
             INSERT OR IGNORE INTO bloques (id, hora_inicio, hora_fin)
             VALUES (?, ?, ?)
         """, [(i + 1, b[0], b[1]) for i, b in enumerate(bloques)])
-
         conn.commit()

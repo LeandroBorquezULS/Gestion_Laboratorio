@@ -1,4 +1,4 @@
-# reservas.py
+# reservas_bd.py
 from core.database import get_connection
 
 def cupos_disponibles(fecha: str):
@@ -29,7 +29,6 @@ def cupos_disponibles(fecha: str):
         })
     return resultados
 
-
 def crear_reserva(fecha: str, bloque_id: int, clase: str, encargado: str = None):
     """
     Intenta crear una reserva. Devuelve True si tuvo éxito, False si ya está ocupada.
@@ -47,6 +46,21 @@ def crear_reserva(fecha: str, bloque_id: int, clase: str, encargado: str = None)
     except:
         return False
 
+def eliminar_reserva(bloque_id: int, fecha: str):
+    """
+    Elimina la reserva de un bloque en una fecha determinada.
+    Devuelve True si tuvo éxito, False si hubo un error.
+    """
+    query = "DELETE FROM reservas WHERE bloque_id = ? AND fecha = ?"
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (bloque_id, fecha))
+            conn.commit()
+        return True
+    except Exception as e:
+        print("Error al eliminar reserva:", e)
+        return False
 
 def crear_informe(fecha_inicio: str, fecha_fin: str):
     """
@@ -63,3 +77,14 @@ def crear_informe(fecha_inicio: str, fecha_fin: str):
         cursor = conn.cursor()
         cursor.execute(query, (fecha_inicio, fecha_fin))
         return cursor.fetchall()
+
+def obtener_cursos():
+    """
+    Devuelve una lista de nombres de cursos disponibles
+    """
+    query = "SELECT nombre FROM cursos ORDER BY nombre"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        cursos = [fila[0] for fila in cursor.fetchall()]
+    return cursos
