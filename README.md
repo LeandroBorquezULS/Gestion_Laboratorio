@@ -19,6 +19,7 @@ Herramienta en **Python** para gestionar las reservas de horarios en los laborat
 Clona este repositorio o descarga los archivos del proyecto:
 
 ```bash
-git clone https://github.com/LeandroBorquezULS/gestor-laboratorios.git
+git clone https://github.com/LeandroBorquezULS/Gestion_Laboratorio.git
 cd gestor-laboratorios
+
 
