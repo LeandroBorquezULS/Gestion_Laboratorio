@@ -20,6 +20,7 @@ Clona este repositorio o descarga los archivos del proyecto:
 
 ```bash
 git clone https://github.com/LeandroBorquezULS/Gestion_Laboratorio.git
-cd gestor-laboratorios
+cd Gestion_Laboratorio
+
 
 
