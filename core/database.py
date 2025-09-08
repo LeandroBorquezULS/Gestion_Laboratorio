@@ -18,7 +18,7 @@ def inicializar_bd():
             nombre TEXT NOT NULL,
             usuario TEXT NOT NULL UNIQUE,
             contrasena TEXT NOT NULL,
-            rol TEXT NOT NULL CHECK(rol IN ('admin', 'docente'))
+            rol TEXT NOT NULL CHECK(rol IN ('admin'))
         )
         """)
 

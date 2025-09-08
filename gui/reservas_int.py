@@ -4,14 +4,17 @@ from tkcalendar import DateEntry
 from datetime import datetime
 from core.reservas_bd import cupos_disponibles, crear_reserva
 from gui.admin_usuarios import VentanaAdminUsuarios
-from core.reportes import generar_reporte_reservas_pdf
+from core.reportes_bd import generar_reporte_reservas_pdf
 from tkinter import messagebox
+from models.usuarios import Encargado
 
 
 class VentanaPrincipal:
-    def __init__(self, usuario, rol):
-        self.usuario = usuario
-        self.rol = rol
+    def __init__(self, encargado):
+        self.encargado = encargado
+        self.usuario = encargado._nombre
+        self.rol = "admin" if isinstance(encargado, Encargado) and encargado.id_encargado == 1 else "docente"
+
 
         self.ventana = tk.Tk()
         self.ventana.title("Sistema de Reservas")

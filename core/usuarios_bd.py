@@ -25,7 +25,7 @@ def autenticar_usuario(usuario: str, contrasena: str):
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query, (usuario, contrasena))
-        return cursor.fetchone()  # devuelve (id, nombre, rol) o None
+        return cursor.fetchone()  
 
 
 def ver_usuarios_registrados():
@@ -54,3 +54,4 @@ def quitar_usuario(usuario_id: int):
     except Exception as e:
         print("Error al eliminar usuario:", e)
         return False
+

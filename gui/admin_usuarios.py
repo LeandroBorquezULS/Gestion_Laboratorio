@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 from core.usuarios_bd import ver_usuarios_registrados, quitar_usuario
+from models.usuarios import Persona
 
 class VentanaAdminUsuarios:
     def __init__(self, admin_nombre):
@@ -34,9 +35,11 @@ class VentanaAdminUsuarios:
         for row in self.tree.get_children():
             self.tree.delete(row)
 
-        usuarios = ver_usuarios_registrados()
-        for u in usuarios:
-            self.tree.insert("", tk.END, values=(u["id"], u["nombre"], u["usuario"], u["rol"]))
+        registros = ver_usuarios_registrados()
+        usuarios = [Persona(u[1], u[2]) for u in registros]  # u[1]=nombre, u[2]=usuario
+
+        for persona in usuarios:
+            self.tree.insert("", "end", values=(persona._nombre, persona._usuario))
 
     def _quitar_usuario(self):
         seleccionado = self.tree.selection()
