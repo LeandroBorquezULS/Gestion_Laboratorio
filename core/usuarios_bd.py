@@ -1,7 +1,10 @@
 # core/usuarios_bd.py
+import bcrypt
 from core.database import get_connection
 
-def registrar_usuario(nombre: str, usuario: str, contrasena: str, rol: str = "docente"):
+def registrar_usuario(nombre: str, usuario: str, contrasena: str, rol: str = "usuario"):
+    # Generar hash seguro
+    hashed = bcrypt.hashpw(contrasena.encode("utf-8"), bcrypt.gensalt())
     query = """
     INSERT INTO usuarios (nombre, usuario, contrasena, rol)
     VALUES (?, ?, ?, ?)
@@ -9,7 +12,7 @@ def registrar_usuario(nombre: str, usuario: str, contrasena: str, rol: str = "do
     try:
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(query, (nombre, usuario, contrasena, rol))
+            cursor.execute(query, (nombre, usuario, hashed, rol))
             conn.commit()
         return True
     except Exception as e:
@@ -18,14 +21,19 @@ def registrar_usuario(nombre: str, usuario: str, contrasena: str, rol: str = "do
 
 
 def autenticar_usuario(usuario: str, contrasena: str):
-    query = """
-    SELECT id, nombre, rol FROM usuarios
-    WHERE usuario = ? AND contrasena = ?
-    """
+    query = "SELECT id, nombre, contrasena, rol FROM usuarios WHERE usuario = ?"
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(query, (usuario, contrasena))
-        return cursor.fetchone()  # devuelve (id, nombre, rol) o None
+        cursor.execute(query, (usuario,))
+        row = cursor.fetchone()
+        if row is None:
+            return None
+
+        id_, nombre, hashed, rol = row
+        # Verificar contraseña
+        if bcrypt.checkpw(contrasena.encode("utf-8"), hashed):
+            return (id_, nombre, rol)
+        return None
 
 
 def ver_usuarios_registrados():

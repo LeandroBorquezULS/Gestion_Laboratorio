@@ -13,6 +13,13 @@ Herramienta en **Python** para gestionar las reservas de horarios en los laborat
 - Librerías necesarias:
   - [tkcalendar](https://pypi.org/project/tkcalendar/)
   - [reportlab](https://pypi.org/project/reportlab/)
+  - [bcrypt](https://pypi.org/project/bcrypt/)
+  
+```bash
+pip install tkcalendar
+pip install reportlab
+pip install bcrypt
+```
 
 ## Instalación
 
@@ -21,6 +28,8 @@ Clona este repositorio o descarga los archivos del proyecto:
 ```bash
 git clone https://github.com/LeandroBorquezULS/Gestion_Laboratorio.git
 cd Gestion_Laboratorio
+
+
 
 
 
