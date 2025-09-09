@@ -9,10 +9,16 @@ from funciones import (
 )
 
 def menu():
+    
+    #Muestra el menú principal del sistema de reservas de laboratorios.
+
     print("==== Sistema de Reservas ====")
+
+    # Se fuerza al usuario a iniciar sesión antes de usar el sistema
     enc = None
     while not enc:
         enc = login()
+
 
     while True:
         print("\nOpciones:")
@@ -23,10 +29,15 @@ def menu():
         opcion = input("Elija opción: ")
 
         if opcion == "1":
+            # Crear una nueva reserva
             fecha = obtener_fecha("Fecha de reserva (YYYY-MM-DD) [Enter para hoy]: ")
+
+            # Mostrar laboratorios
             print("\nLaboratorios disponibles:")
             for i, lab in enumerate(laboratorios):
                 print(f"{i+1}. {lab.nombre_lab}")
+
+            # Seleccionar laboratorio
             try:
                 lab_idx = int(input("Elija laboratorio (número): ")) - 1
                 if lab_idx < 0 or lab_idx >= len(laboratorios):
@@ -37,6 +48,8 @@ def menu():
                 continue
 
             lab_seleccionado = laboratorios[lab_idx]
+
+            # Mostrar horarios disponibles
             mostrar_horarios_lab(lab_seleccionado, fecha)
             try:
                 bloque_idx = int(input("Elija bloque horario: ")) - 1
@@ -47,6 +60,7 @@ def menu():
                 print("Entrada inválida")
                 continue
 
+            # Crear la reserva en el bloque seleccionado
             crear_reserva(lab_seleccionado, fecha, bloque_idx)
 
         elif opcion == "2":
@@ -56,6 +70,7 @@ def menu():
             cancelar_reserva()
 
         elif opcion == "4":
+
             print("Saliendo...")
             break
 
