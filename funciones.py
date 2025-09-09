@@ -14,6 +14,7 @@ from data import (
 # -----------------------------
 
 def login():
+    """Inicia sesión de un encargado del laboratorio."""
     usuario = input("Usuario: ")
     contrasena = input("Contraseña: ")
     for enc in encargados:
@@ -25,6 +26,7 @@ def login():
 
 
 def obtener_fecha(mensaje):
+    """Obtiene una fecha desde la entrada del usuario."""
     fecha_input = input(mensaje)
     if fecha_input == "":
         return datetime.date.today().strftime("%Y-%m-%d")
@@ -32,6 +34,7 @@ def obtener_fecha(mensaje):
 
 
 def mostrar_horarios_lab(lab, fecha):
+    """Muestra la disponibilidad de un laboratorio para cada bloque horario."""
     print(f"\nDisponibilidad - {lab.nombre_lab} - {fecha}")
     print("=" * 50)
     for i, (hora_inicio, hora_fin) in enumerate(bloques_horarios):
@@ -42,6 +45,7 @@ def mostrar_horarios_lab(lab, fecha):
 
 
 def mostrar_reservas_ocupadas(lab, fecha):
+    """Lista las reservas activas de un laboratorio para una fecha específica."""
     print(f"\nReservas activas - {lab.nombre_lab} - {fecha}")
     print("=" * 50)
     reservas_activas = lab.obtener_reservas_activas_por_fecha(fecha)
@@ -60,12 +64,14 @@ def mostrar_reservas_ocupadas(lab, fecha):
         return []
 
     for j, (bloque_idx, reserva) in enumerate(reservas_por_bloque, 1):
-        print(f"{j}. Bloque {bloque_idx+1} ({bloques_texto[bloque_idx]}) - {reserva.asignatura} - ID: {reserva.id_reserva}")
+        print(f"{j}. Bloque {bloque_idx+1} ({bloques_texto[bloque_idx]}) - "
+              f"{reserva.asignatura} - ID: {reserva.id_reserva}")
 
     return reservas_por_bloque
 
 
 def crear_reserva(lab, fecha, bloque_idx):
+    """Crea una nueva reserva para un laboratorio."""
     global reserva_id_counter
     asignatura = input("Nombre de la asignatura: ")
     hora_inicio, hora_fin = bloques_horarios[bloque_idx]
@@ -74,7 +80,7 @@ def crear_reserva(lab, fecha, bloque_idx):
         lab.agregar_reserva(reserva)
         print("Reserva creada correctamente")
         print(f"ID de reserva: {reserva_id_counter}")
-        # Actualizamos el contador en memoria
+        # Actualiza el contador en memoria
         from data import reserva_id_counter as counter_ref
         counter_ref += 1
         globals()['reserva_id_counter'] = counter_ref
@@ -83,6 +89,7 @@ def crear_reserva(lab, fecha, bloque_idx):
 
 
 def cancelar_reserva():
+    """Cancela una reserva seleccionada por el usuario."""
     print("\nCancelar reserva")
     print("=" * 20)
     fecha = obtener_fecha("Fecha de la reserva (YYYY-MM-DD) [Enter para hoy]: ")
@@ -124,6 +131,7 @@ def cancelar_reserva():
 
 
 def generar_reporte_mensual():
+    """Genera un reporte mensual de las reservas de todos los laboratorios."""
     print("\nGenerar reporte mensual")
     print("=" * 30)
     try:
